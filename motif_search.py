@@ -159,21 +159,31 @@ class MotifSearch:
     def randomized_motif_search(self):
         motifs = self.initial_motifs
         iterations = 0
+        best_score = None
+        best_motifs = None
         while True:
             iterations += 1
             self.set_new_profile(motifs)
             motifs = self.create_new_motifs()
             score = self.calculate_score(motifs)
+            if best_score is None:
+                best_score = score
+                best_motifs = motifs
+
+            if score < best_score:
+                best_score = score
+                best_motifs = motifs
+
             self.temp_score_buffer.append(score)
 
             if len(self.temp_score_buffer) >= self.check_period:
                 mean = statistics.mean(self.temp_score_buffer)
-                # print('== Random Check ==     mean: ', mean, 'score: ', score)
+                print('== Random Check ==     mean: ', mean, 'score: ', score)
                 if mean <= score:
                     # Terminate random search
-                    self.best_motifs = motifs
+                    self.best_motifs = best_motifs
                     self.iterations = iterations
-                    self.final_score = score
+                    self.final_score = best_score
                     self.consensus_string = self.get_consensus_string()
                     return
                 else:
@@ -182,6 +192,8 @@ class MotifSearch:
     def gibbs_sampler(self):
         motifs = self.initial_motifs
         iterations = 0
+        best_score = None
+        best_motifs = None
         while True:
             iterations += 1
 
@@ -196,16 +208,24 @@ class MotifSearch:
             # Add new motif to empty place
             motifs[i] = self.get_motif_from_string(self.dna[i], prob_dist=True)
             score = self.calculate_score(motifs)
+            if best_score is None:
+                best_score = score
+                best_motifs = motifs
+
+            if score < best_score:
+                best_score = score
+                best_motifs = motifs
+
             self.temp_score_buffer.append(score)
 
             if len(self.temp_score_buffer) >= self.check_period:
                 mean = statistics.mean(self.temp_score_buffer)
-                # print('== Gibbs Check ==     mean: ', mean, 'score: ', score)
+                print('== Gibbs Check ==     mean: ', mean, 'score: ', score)
                 if mean <= score:
                     # Terminate random search
-                    self.best_motifs = motifs
+                    self.best_motifs = best_motifs
                     self.iterations = iterations
-                    self.final_score = score
+                    self.final_score = best_score
                     self.consensus_string = self.get_consensus_string()
                     return
                 else:

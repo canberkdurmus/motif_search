@@ -6,5 +6,5 @@ if __name__ == '__main__':
     dna = Dna(file_name, generate=False).lines
 
     for k in range(9, 12):
-        MotifSearch('random', dna, k).print_results()
-        MotifSearch('gibbs', dna, k).print_results()
+        MotifSearch('random', dna, k, check_period=500).print_results()
+        MotifSearch('gibbs', dna, k, check_period=500).print_results()
