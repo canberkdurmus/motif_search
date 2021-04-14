@@ -178,7 +178,7 @@ class MotifSearch:
 
             if len(self.temp_score_buffer) >= self.check_period:
                 mean = statistics.mean(self.temp_score_buffer)
-                print('== Random Check ==     mean: ', mean, 'score: ', score)
+                # print('== Random Check ==     mean: ', mean, 'score: ', score)
                 if mean <= score:
                     # Terminate random search
                     self.best_motifs = best_motifs
@@ -220,7 +220,7 @@ class MotifSearch:
 
             if len(self.temp_score_buffer) >= self.check_period:
                 mean = statistics.mean(self.temp_score_buffer)
-                print('== Gibbs Check ==     mean: ', mean, 'score: ', score)
+                # print('== Gibbs Check ==     mean: ', mean, 'score: ', score)
                 if mean <= score:
                     # Terminate random search
                     self.best_motifs = best_motifs
